@@ -1,0 +1,30 @@
+/ecobuddy
+├── /src
+│   ├── /components
+│   │   ├── Button.tsx             # Composant bouton réutilisable
+│   │   ├── Card.tsx               # Carte pour afficher une question ou un résultat
+│   │   ├── Header.tsx             # En-tête commun
+│   │   └── SwipeHandler.tsx       # Gestion des swipes pour les questions
+│   ├── /screens
+│   │   ├── QuestionnaireScreen.tsx # Écran principal pour le questionnaire
+│   │   ├── ResultsScreen.tsx       # Écran des résultats
+│   │   └── WelcomeScreen.tsx       # (Optionnel) Écran d'accueil ou introduction
+│   ├── /navigation
+│   │   ├── AppNavigator.tsx       # Configuration de la navigation
+│   │   └── StackNavigator.tsx     # Navigateur principal (type stack)
+│   ├── /utils
+│   │   ├── calculateCarbon.ts     # Algorithme de calcul de l'empreinte carbone
+│   │   ├── constants.ts           # Facteurs d'émission et autres constantes
+│   │   └── helpers.ts             # Fonctions utilitaires (ex. validation)
+│   ├── /context
+│   │   └── UserAnswersContext.tsx # Gestion des réponses utilisateur avec React Context
+│   ├── /assets
+│   │   ├── /images                # Images (logos, icônes, etc.)
+│   │   ├── /fonts                 # Polices personnalisées
+│   │   └── /translations          # Traductions pour le multilingue
+│   ├── /styles
+│   │   └── globalStyles.ts        # Styles globaux pour tout le projet
+│   ├── App.tsx                    # Point d'entrée principal
+├── package.json                   # Dépendances et scripts
+├── tsconfig.json                  # Configuration TypeScript
+├── README.md                      # Documentation
