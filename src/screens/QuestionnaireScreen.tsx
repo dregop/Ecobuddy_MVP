@@ -124,6 +124,10 @@ const QuestionnaireScreen = () => {
       >
         <Image source={questions[currentIndex].icon} style={styles.icon} />
         <Text style={styles.question}>{questions[currentIndex].question}</Text>
+        <View style={styles.imageContainer}>
+          <Image source={require('../assets/images/cross.png')} style={styles.cross} />
+          <Image source={require('../assets/images/checked.png')} style={styles.checked} />
+        </View>
       </Animated.View>
     </View>
   );
@@ -166,6 +170,24 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginBottom: 20,
+  },
+  imageContainer: {
+    position: 'absolute',
+    bottom: 20, 
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  cross: {
+    width: 40,
+    height: 40,
+    left:0,
+  },
+  checked: {
+    width: 30,
+    height: 30,
+    right:0,
   }
 });
 
