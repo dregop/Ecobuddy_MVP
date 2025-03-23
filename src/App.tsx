@@ -1,16 +1,35 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import Background from './components/Background';
+import Banner from './components/Banner';
+import { AuthProvider } from './context/AuthContext';
 import { UserAnswersProvider } from './context/UserAnswersContext';
 import AppNavigator from './navigation/AppNavigator';
 
-const App = () => {
+const App: React.FC = () => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light'); // Changez le thème ici pour tester
+
   return (
-    <UserAnswersProvider>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </UserAnswersProvider>
+    <View style={styles.container}>
+      {/* Fond dynamique */}
+      <Background theme={theme} />
+
+      {/* Bannière dynamique */}
+      <Banner theme={theme} />
+
+      <AuthProvider>
+        <UserAnswersProvider>
+          <AppNavigator />
+        </UserAnswersProvider>
+      </AuthProvider>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default App;

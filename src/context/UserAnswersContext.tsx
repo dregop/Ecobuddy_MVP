@@ -9,6 +9,8 @@ export type UserAnswers = {
   dietType: string;
   yearlyFlights: number;
   flightDistance: string;
+  clothingPurchases: number;
+  electronicsPurchases: number;
 };
 
 const defaultAnswers: UserAnswers = {
@@ -19,6 +21,8 @@ const defaultAnswers: UserAnswers = {
   dietType: 'flexitarian',
   yearlyFlights: 2,
   flightDistance: 'short',
+  clothingPurchases: 200,
+  electronicsPurchases: 200,
 };
 
 type UserAnswersContextType = {
