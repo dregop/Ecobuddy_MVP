@@ -1,10 +1,9 @@
-import { RouteProp } from '@react-navigation/native';
 
 export type AppStackParamList = {
   Questionnaire: {
     questions?: any[];
   }; // Pas de paramètres pour cet écran
-  Résultats: Results;
+  Résultats?: Results;
   Details: {
     categoryDetails: Record<string, number>;
   };
@@ -28,3 +27,24 @@ export interface Results {
     travel: number;
   };
 }
+
+export type Question = {
+  id: number;
+  question: string;
+  field: keyof UserAnswers;
+  value: any;
+  icon: any;
+};
+
+// Type des réponses utilisateur
+export type UserAnswers = {
+  transportMode: string;
+  weeklyDistance: number;
+  homeSize: number;
+  energyConsumption: number;
+  dietType: string;
+  yearlyFlights: number;
+  flightDistance: string;
+  clothingPurchases: number;
+  electronicsPurchases: number;
+};

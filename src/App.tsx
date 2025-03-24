@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import Background from './components/Background';
 import Banner from './components/Banner';
 import { AuthProvider } from './context/AuthContext';
-import { UserAnswersProvider } from './context/UserAnswersContext';
 import AppNavigator from './navigation/AppNavigator';
 
 const App: React.FC = () => {
@@ -18,9 +17,7 @@ const App: React.FC = () => {
       <Banner theme={theme} />
 
       <AuthProvider>
-        <UserAnswersProvider>
           <AppNavigator />
-        </UserAnswersProvider>
       </AuthProvider>
     </View>
   );

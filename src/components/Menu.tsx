@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { AppStackParamList } from '../utils/types'; // Assurez-vous que ce fichier contient les types corrects
+import { AppStackParamList } from '../utils/types';
 
 type NavigationProp = StackNavigationProp<AppStackParamList>;
 

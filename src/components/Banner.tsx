@@ -8,7 +8,7 @@ interface BannerProps {
 const Banner: React.FC<BannerProps> = ({ theme }) => {
   const bannerStyles = {
     light: {
-      backgroundColor: '#78DCE8', // Couleur pour le thème clair
+      backgroundColor: '#61C6FF', // Couleur pour le thème clair
     },
     dark: {
       backgroundColor: '#1f1f1f', // Couleur pour le thème sombre

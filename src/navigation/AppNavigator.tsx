@@ -5,15 +5,12 @@ import { AppStackParamList } from '../utils/types'; // Importez les types défin
 import { useAuth } from '../context/AuthContext';
 import Menu from '../components/Menu';
 import { NavigationContainer } from '@react-navigation/native';
-import { useUserAnswers } from '../context/UserAnswersContext';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
 const AppNavigator = () => {
   const { isLoggedIn } = useAuth(); // Vérifie si l'utilisateur est connecté
-  const { answers } = useUserAnswers(); // Vérifie si l'utilisateur est connecté
 
-  console.log(answers);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -25,8 +22,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Résultats" component={ResultsScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
       </Stack.Navigator>
-      {/* {isLoggedIn && <Menu />} */}
-      <Menu />
+      {isLoggedIn && <Menu />}
     </NavigationContainer>
 
   );

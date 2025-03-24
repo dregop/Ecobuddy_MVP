@@ -1,30 +1,29 @@
-import { UserAnswers } from '../context/UserAnswersContext';
-import { CarbonFactors, Results } from './types';
+import { CarbonFactors, Results, UserAnswers } from './types';
 
 const carbonFactors: CarbonFactors = {
   transport: {
-    car: 0.21,
+    car: 0.21, // kg CO₂/km
     public_transport: 0.05,
     bike: 0,
     walking: 0,
   },
   home: {
-    energy: 0.233,
-    size: 10,
+    energy: 0.2, // kg CO₂/kWh
+    size: 10,    // kg CO₂/m²/an
   },
   diet: {
-    vegetarian: 2.5,
+    vegetarian: 2.5,  // kg CO₂/an
     flexitarian: 3.5,
     omnivore: 5,
   },
   flights: {
-    short: 300,
+    short: 300,  // kg CO₂/vol AR
     medium: 700,
     long: 2000,
   },
   purchases: {
-    clothing: 500, // En kg CO₂/an pour des achats fréquents
-    electronics: 500, // En kg CO₂/an pour des achats réguliers
+    clothing: 50,      // kg CO₂/vêtement neuf
+    electronics: 50,   // kg CO₂/an si renouvellement rapide
   },
 };
   
@@ -35,7 +34,8 @@ const carbonFactors: CarbonFactors = {
     const dietEmissions = carbonFactors.diet[answers.dietType as keyof typeof carbonFactors.diet] * 365;
     const flightEmissions = answers.yearlyFlights * carbonFactors.flights[answers.flightDistance as keyof typeof carbonFactors.flights];
 
-    const purchasesEmissions = answers.clothingPurchases + answers.electronicsPurchases;
+    const purchasesEmissions = answers.clothingPurchases * carbonFactors.purchases.clothing + answers.electronicsPurchases;
+
 
     console.log(purchasesEmissions);
   

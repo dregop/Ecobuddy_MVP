@@ -34,12 +34,12 @@ const Background: React.FC<BackgroundProps> = ({ theme }) => {
 
   const backgroundStyles = {
     light: {
-      gradientColors: ['#FFFFFF', '#78DCE8'] as [string, string],
+      gradientColors: ['#FFFFFF', '#61C6FF'] as [string, string],
       earthImage: require('../assets/images/planet-earth-4.png'),
       cloudImage: require('../assets/images/cloud-2.png'),
     },
     dark: {
-      gradientColors: ['#ff0000', '#ff6c00', '#25337a', '#1f1f1f'] as [string, string, string, string],
+      gradientColors: ['#ff0000', '#ff6c00', '#1f1f1f', '#1f1f1f'] as [string, string, string, string],
       earthImage: require('../assets/images/planet-earth-7.png'),
       cloudImage: require('../assets/images/cloud-with-lightning.png'),
     },
