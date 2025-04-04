@@ -4,10 +4,10 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AppStackParamList, Question, Results } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { calculateCarbonFootprint } from '../utils/calculateCarbon';
-import { useUserDataStore } from '../store/userDataStore';
+import { defaultAnswers, useUserDataStore } from '../store/userDataStore';
 import QuestionCard from '../components/QuestionCard';
 import { useSwipe } from '../hooks/useSwipe';
-import { firstQuestions } from '../data/questions';
+import { firstQuestions, globalQuestions } from '../data/questions';
 
 // Obtient la largeur de l'écran, utilisée pour les calculs de swipe
 const { width } = Dimensions.get('window');
@@ -19,12 +19,13 @@ type QuestionnaireScreenRouteProp = RouteProp<AppStackParamList, 'Questionnaire'
 
 const QuestionnaireScreen = () => {
   const route = useRoute<QuestionnaireScreenRouteProp>();
-  const questions: Question[] = route.params?.questions ?? firstQuestions;
+  const isGlobalQuiz = route.params?.isGlobalQuiz ?? false;
+  const questions: Question[] = isGlobalQuiz ? globalQuestions : firstQuestions;
 
   // Stocke l'index de la question actuelle
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { setAnswer, answers, setTotalImpact, setCategoryDetails } = useUserDataStore();
+  const { setAnswer, answers, setTotalImpact, setCategoryDetails, totalImpact } = useUserDataStore();
 
   // Utilise la navigation pour passer à l'écran des résultats
   const navigation = useNavigation<QuestionnaireScreenNavigationProp>();
@@ -39,53 +40,60 @@ const QuestionnaireScreen = () => {
       position.setValue({ x: 0, y: 0 }); // Réinitialise la position
 
       // Passe à la question suivante ou calcule les résultats
-      setCurrentIndex((prevIndex) => {
-        const currentQuestion = questions[prevIndex];
-        const nextIndex = prevIndex + 1;
+    setCurrentIndex((prevIndex) => {
+      const currentQuestion = questions[prevIndex];
+      const nextIndex = prevIndex + 1;
 
-        // Mise à jour Zustand store
-        setAnswer(
-          currentQuestion.field,
-          direction === 'right' ? currentQuestion.value : answers[currentQuestion.field]
-        );
+      // Met à jour la réponse dans le store
+      setAnswer(
+        currentQuestion.category,
+        currentQuestion.field,
+        direction === 'right' ? currentQuestion.value : defaultAnswers[currentQuestion.category][currentQuestion.field]
+      );
 
-        // Fin questionnaire → calcul impact
-        if (nextIndex >= questions.length) {
-          const footprint: Results = calculateCarbonFootprint({
-            ...answers,
-            [currentQuestion.field]:
-              direction === 'right' ? currentQuestion.value : answers[currentQuestion.field],
-          });
+      // Prépare les réponses mises à jour
+      const updatedAnswers = {
+        ...answers,
+        [currentQuestion.category]: {
+          ...answers[currentQuestion.category],
+          [currentQuestion.field]:
+            direction === 'right'
+              ? currentQuestion.value
+              : defaultAnswers[currentQuestion.category][currentQuestion.field],
+        },
+      };
 
-          setTotalImpact(footprint.totalImpact);
-          setCategoryDetails(footprint.categoryDetails);
+      // Si Global Quiz → recalcul à chaque swipe
+      if (isGlobalQuiz) {
+        const footprint: Results = calculateCarbonFootprint(updatedAnswers);
+        setTotalImpact(footprint.totalImpact);
+        setCategoryDetails(footprint.categoryDetails);
+      }
 
-          navigation.navigate('Résultats');
-        }
+      // Si fin du questionnaire classique → calcul final
+      if (!isGlobalQuiz && nextIndex >= questions.length) {
+        const footprint: Results = calculateCarbonFootprint(updatedAnswers);
+        setTotalImpact(footprint.totalImpact);
+        setCategoryDetails(footprint.categoryDetails);
+        navigation.navigate('UserInfo');
+      }
 
-        return nextIndex < questions.length ? nextIndex : prevIndex; // Passe à la prochaine question
-      });
+      // Boucle infinie en Global Quiz
+      return isGlobalQuiz ? (nextIndex % questions.length) : (nextIndex < questions.length ? nextIndex : prevIndex);
+    });
+
     });
   };
 
   const { position, panResponder } = useSwipe(handleSwipe);
 
-
-
-  // Affiche un écran de fin si toutes les questions ont été répondues
-  if (currentIndex >= questions.length) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.resultText}>Vous avez terminé le questionnaire !</Text>
-      </View>
-    );
-  }
-
   return (
    <View style={styles.container}>
       <View style={styles.progressContainer}>
         <Text style={styles.progressText}>
-          Questions : {currentIndex + 1} / {questions.length} {/* Affiche le numéro de la question */}
+        {isGlobalQuiz
+          ? `Empreinte : ${totalImpact.toFixed(2)} kg CO₂`
+          : `Question : ${currentIndex + 1} / ${questions.length}`}
         </Text>
       </View>
 

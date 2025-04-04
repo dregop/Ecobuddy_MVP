@@ -5,11 +5,14 @@ import { AppStackParamList } from '../utils/types'; // Importez les types défin
 import { useAuth } from '../context/AuthContext';
 import Menu from '../components/Menu';
 import { NavigationContainer } from '@react-navigation/native';
+import UserInfoScreen from '../screens/UserInfoScreen';
+import { useUserDataStore } from '../store/userDataStore';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
 const AppNavigator = () => {
   const { isLoggedIn } = useAuth(); // Vérifie si l'utilisateur est connecté
+  const pseudo = useUserDataStore((state) => state.userInfo?.pseudo);
 
   return (
     <NavigationContainer>
@@ -21,8 +24,9 @@ const AppNavigator = () => {
         <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
         <Stack.Screen name="Résultats" component={ResultsScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="UserInfo" component={UserInfoScreen} />
       </Stack.Navigator>
-      {isLoggedIn && <Menu />}
+      {(isLoggedIn || !!pseudo) && <Menu />}
     </NavigationContainer>
 
   );

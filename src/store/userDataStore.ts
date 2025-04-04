@@ -1,29 +1,41 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserAnswers } from '../utils/types';
+import { UserAnswers, UserInfoType } from '../utils/types';
 
 type CategoryDetailsType = { [key: string]: number };
 
-const defaultAnswers: UserAnswers = {
-  transportMode: 'public_transport',
-  weeklyDistance: 30,
-  homeSize: 50,
-  energyConsumption: 2000,
-  dietType: 'flexitarian',
-  yearlyFlights: 1,
-  flightDistance: 'medium',
-  clothingPurchases: 12,
-  electronicsPurchases: 50,
+export const defaultAnswers: UserAnswers = {
+  transport: {
+    transportMode: 'public_transport',
+    weeklyDistance: 30,
+  },
+  housing: {
+    homeSize: 50,
+    energyConsumption: 2000,
+  },
+  food: {
+    dietType: 'flexitarian',
+  },
+  travel: {
+    yearlyFlights: 1,
+    flightDistance: 'medium',
+  },
+  purchases: {
+    clothingPurchases: 12,
+    electronicsPurchases: 50,
+  },
 };
 
 type UserDataState = {
   totalImpact: number;
   categoryDetails: CategoryDetailsType;
   answers: UserAnswers;
+  userInfo?: UserInfoType;
   setTotalImpact: (impact: number) => void;
   setCategoryDetails: (details: CategoryDetailsType) => void;
-  setAnswer: (field: string, value: any) => void;
+  setAnswer: (category: keyof UserAnswers, field: string, value: any) => void;
+  setUserInfo: (info: UserInfoType) => void;
   resetAnswers: () => void;
   fetchImpactFromBackend: (userId: string) => Promise<void>;
   resetImpact: () => void;
@@ -35,12 +47,20 @@ export const useUserDataStore = create<UserDataState>()(
       totalImpact: 0,
       categoryDetails: {},
       answers: defaultAnswers,
+      userInfo: undefined,
       setTotalImpact: (impact) => set({ totalImpact: impact }),
       setCategoryDetails: (details) => set({ categoryDetails: details }),
-      setAnswer: (field, value) =>
+      setAnswer: (category, field, value) =>
         set((state) => ({
-          answers: { ...state.answers, [field]: value },
+          answers: {
+            ...state.answers,
+            [category]: {
+              ...state.answers[category],
+              [field]: value,
+            },
+          },
         })),
+      setUserInfo: (info) => set({ userInfo: info }),
       resetAnswers: () => set({ answers: defaultAnswers }),
       fetchImpactFromBackend: async (userId) => {
         try {
@@ -64,3 +84,4 @@ export const useUserDataStore = create<UserDataState>()(
     }
   )
 );
+

@@ -2,18 +2,20 @@
 export type AppStackParamList = {
   Questionnaire: {
     questions?: any[];
+    isGlobalQuiz?: boolean;
   }; // Pas de paramètres pour cet écran
   Résultats?: Results;
   Details: {
     categoryDetails: Record<string, number>;
   };
+  UserInfo: undefined; // Pas de paramètres pour cet écran
 };
 
 export interface CarbonFactors {
   transport: { [key: string]: number }; // Facteurs d'émission (kgCO2/km)
-  home: { energy: number; size: number }; // Énergie et taille du logement
-  diet: { [key: string]: number }; // Régime alimentaire (kgCO2/jour)
-  flights: { [key: string]: number }; // Vols (kgCO2/vol)
+  housing: { energy: number; size: number }; // Énergie et taille du logement
+  food: { [key: string]: number }; // Régime alimentaire (kgCO2/jour)
+  travel: { [key: string]: number }; // Vols (kgCO2/vol)
   purchases: { [key: string]: number }; // Vols (kgCO2/vol)
 }
 
@@ -31,20 +33,23 @@ export interface Results {
 export type Question = {
   id: number;
   question: string;
-  field: keyof UserAnswers;
+  category: 'transport' | 'housing' | 'food' | 'travel' | 'purchases';
+  field: string;
   value: any;
   icon: any;
 };
 
-// Type des réponses utilisateur
 export type UserAnswers = {
-  transportMode: string;
-  weeklyDistance: number;
-  homeSize: number;
-  energyConsumption: number;
-  dietType: string;
-  yearlyFlights: number;
-  flightDistance: string;
-  clothingPurchases: number;
-  electronicsPurchases: number;
+  transport: { [key: string]: any };
+  housing: { [key: string]: any };
+  food: { [key: string]: any };
+  travel: { [key: string]: any };
+  purchases: { [key: string]: any };
+};
+
+export type UserInfoType = {
+  pseudo: string;
+  email: string;
+  age: number;
+  photoUri?: string | null;
 };

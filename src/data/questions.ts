@@ -1,78 +1,100 @@
+import { Question } from "../utils/types";
 
-export const firstQuestions = [
+export const firstQuestions: Question[] = [
   {
     id: 1,
     question: 'Utilisez-vous principalement une voiture ?',
+    category: 'transport',
     field: 'transportMode',
-    value: 'car', // Correspond à 0.21 kg CO₂/km dans ton carbonFactors
+    value: 'car',
     icon: require('../assets/images/car.png'),
   },
   {
     id: 2,
     question: 'Parcourez-vous plus de 100 km par semaine en voiture ?',
+    category: 'transport',
     field: 'weeklyDistance',
-    value: 150, // km/semaine → 150 × 52 × 0.21 kg CO₂/km ≈ 1638 kg/an
+    value: 150,
     icon: require('../assets/images/car.png'),
   },
   {
     id: 3,
     question: 'Votre logement fait-il plus de 90 m² ?',
+    category: 'housing',
     field: 'homeSize',
-    value: 100, // m² → 100 × 10 kg CO₂/m²/an = 1000 kg/an
+    value: 100,
     icon: require('../assets/images/house.png'),
   },
   {
     id: 4,
     question: 'Votre logement est-il mal isolé ou ancien ?',
+    category: 'housing',
     field: 'energyConsumption',
-    value: 3500, // kWh/an → 3500 × 0.2 kg CO₂/kWh = 700 kg/an
+    value: 3500,
     icon: require('../assets/images/house.png'),
   },
   {
     id: 5,
     question: 'Consommez-vous de la viande plus de 5 fois/semaine ?',
+    category: 'food',
     field: 'dietType',
-    value: 'omnivore', // 5 kg CO₂/jour × 365 = 1825 kg/an
+    value: 'omnivore',
     icon: require('../assets/images/shopping.png'),
   },
   {
     id: 6,
     question: 'Prenez-vous plus de 2 vols par an ?',
+    category: 'travel',
     field: 'yearlyFlights',
-    value: 2, // 2 × 2000 kg CO₂ = 4000 kg/an
+    value: 2,
     icon: require('../assets/images/plane.png'),
   },
   {
     id: 7,
-    question: 'Ces vols dépassent-ils principalement 5000 km (comme un Paris New-York) ?',
+    question: 'Ces vols dépassent-ils principalement 5000 km ?',
+    category: 'travel',
     field: 'flightDistance',
-    value: 'long', // → 2000 kg CO₂/vol
+    value: 'long',
     icon: require('../assets/images/plane.png'),
   },
   {
     id: 8,
     question: 'Achetez-vous plus de 2 vêtements neufs par mois ?',
+    category: 'purchases',
     field: 'clothingPurchases',
-    value: 24, // 24 vêtements/an × 50 kg CO₂/vêtement = 1200 kg/an
+    value: 24,
     icon: require('../assets/images/shopping.png'),
   },
   {
     id: 9,
     question: 'Changez-vous de téléphone ou ordinateur tous les 2 ans environ ?',
+    category: 'purchases',
     field: 'electronicsPurchases',
-    value: 50, // 50 kg CO₂/an si renouvellement fréquent
+    value: 50,
     icon: require('../assets/images/shopping.png'),
   },
 ];
 
-export const globalQuestions = [
-  { id: 1, question: 'Prout ?', field: 'transportMode', value: 'car', icon: require('../assets/images/car.png') },
-  { id: 2, question: 'Parcourez-vous plus de 100 km par semaine ?', field: 'weeklyDistance', value: 150, icon: require('../assets/images/car.png') },
-  { id: 3, question: 'Votre logement est-il de grande taille (> 90 m²) ?', field: 'homeSize', value: 100, icon: require('../assets/images/house.png') },
-  { id: 4, question: 'Votre consommation d’énergie dépasse-t-elle 3000 kWh/an ?', field: 'energyConsumption', value: 3500, icon: require('../assets/images/house.png') },
-  { id: 5, question: 'Consommez-vous régulièrement de la viande rouge ?', field: 'dietType', value: 'omnivore', icon: require('../assets/images/shopping.png') },
-  { id: 6, question: 'Prenez-vous plus de 2 vols long-courriers par an ?', field: 'yearlyFlights', value: 4, icon: require('../assets/images/plane.png') },
-  { id: 7, question: 'Ces vols sont-ils principalement longs (> 5000 km) ?', field: 'flightDistance', value: 'long', icon: require('../assets/images/plane.png') },
-  { id: 8, question: 'Achetez-vous plus de 10 vétements neuf par mois ?', field: 'clothingPurchases', value: 600, icon: require('../assets/images/shopping.png') },
-  { id: 9, question: 'Changer vous de téléphones tous les 2 ans plus ou moins ?', field: 'electronicsPurchases', value: 400, icon: require('../assets/images/shopping.png') },
+export const globalQuestions: Question[] = [
+  { id: 10, question: 'Utilisez-vous du chauffage électrique l’hiver ?', category: 'housing', field: 'energyConsumption', value: 4000, icon: require('../assets/images/house.png') },
+  { id: 11, question: 'Consommez-vous des produits laitiers tous les jours ?', category: 'food', field: 'dietType', value: 'omnivore', icon: require('../assets/images/shopping.png') },
+  { id: 12, question: 'Avez-vous une voiture hybride ou électrique ?', category: 'transport', field: 'transportMode', value: 'electric_car', icon: require('../assets/images/car.png') },
+  { id: 13, question: 'Votre logement est-il récent (après 2010) ?', category: 'housing', field: 'homeSize', value: 60, icon: require('../assets/images/house.png') },
+  { id: 14, question: 'Prenez-vous régulièrement des taxis ou VTC ?', category: 'transport', field: 'weeklyDistance', value: 80, icon: require('../assets/images/car.png') },
+  { id: 15, question: 'Achetez-vous des vêtements d’occasion ?', category: 'purchases', field: 'clothingPurchases', value: 0, icon: require('../assets/images/shopping.png') },
+  { id: 16, question: 'Utilisez-vous principalement les transports en commun ?', category: 'transport', field: 'transportMode', value: 'public_transport', icon: require('../assets/images/car.png') },
+  { id: 17, question: 'Consommez-vous des plats industriels plusieurs fois par semaine ?', category: 'food', field: 'dietType', value: 'omnivore', icon: require('../assets/images/shopping.png') },
+  { id: 18, question: 'Votre logement est-il équipé de panneaux solaires ?', category: 'housing', field: 'energyConsumption', value: 1500, icon: require('../assets/images/house.png') },
+  { id: 19, question: 'Avez-vous une deuxième voiture ?', category: 'transport', field: 'transportMode', value: 'car', icon: require('../assets/images/car.png') },
+  { id: 20, question: 'Changez-vous de smartphone tous les ans ?', category: 'purchases', field: 'electronicsPurchases', value: 800, icon: require('../assets/images/shopping.png') },
+  { id: 21, question: 'Utilisez-vous principalement un scooter ou une moto ?', category: 'transport', field: 'transportMode', value: 'motorbike', icon: require('../assets/images/car.png') },
+  { id: 22, question: 'Parcourez-vous plus de 500 km par semaine en voiture ?', category: 'transport', field: 'weeklyDistance', value: 500, icon: require('../assets/images/car.png') },
+  { id: 23, question: 'Votre logement est-il partagé (colocation) ?', category: 'housing', field: 'homeSize', value: 40, icon: require('../assets/images/house.png') },
+  { id: 24, question: 'Avez-vous des appareils électriques en veille la nuit ?', category: 'housing', field: 'energyConsumption', value: 4500, icon: require('../assets/images/house.png') },
+  { id: 25, question: 'Mangez-vous végétarien plus de 3 jours par semaine ?', category: 'food', field: 'dietType', value: 'vegetarian', icon: require('../assets/images/shopping.png') },
+  { id: 26, question: 'Faites-vous plus de 3 vols courts par an ?', category: 'travel', field: 'yearlyFlights', value: 5, icon: require('../assets/images/plane.png') },
+  { id: 27, question: 'Prenez-vous régulièrement des vols domestiques (moins de 1000 km) ?', category: 'travel', field: 'flightDistance', value: 'short', icon: require('../assets/images/plane.png') },
+  { id: 28, question: 'Achetez-vous principalement des vêtements neufs issus de fast-fashion ?', category: 'purchases', field: 'clothingPurchases', value: 300, icon: require('../assets/images/shopping.png') },
+  { id: 29, question: 'Utilisez-vous une imprimante ou des appareils électroniques régulièrement ?', category: 'purchases', field: 'electronicsPurchases', value: 200, icon: require('../assets/images/shopping.png') },
+  { id: 30, question: 'Votre logement dispose-t-il d’une isolation performante (double vitrage) ?', category: 'housing', field: 'energyConsumption', value: 2500, icon: require('../assets/images/house.png') },
 ];
