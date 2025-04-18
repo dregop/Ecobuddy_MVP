@@ -14,26 +14,27 @@ const CompleteRegistrationScreen = () => {
   const [status, setStatus] = useState<'idle' | 'verifying' | 'success' | 'error'>('idle');
   const [user, setUser] = useState<{ email: string; pseudo?: string } | null>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`${process.env.API_URL}/me`, {
-          credentials: 'include',
-        });
-        const data = await response.json();
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await fetch(`${process.env.API_URL}/me`, {
+  //         credentials: 'include',
+  //       });
+  //       const data = await response.json();
 
-        if (response.ok) {
-          setUser(data.user);
-        } else {
-          console.warn('Utilisateur non authentifié');
-        }
-      } catch (err) {
-        console.error('Erreur lors de la récupération de l’utilisateur :', err);
-      }
-    };
+  //       if (response.ok) {
+  //         setUser(data.user);
+  //       } else {
+  //         console.warn('Utilisateur non authentifié');
+  //         navigation.navigate('Login');
+  //       }
+  //     } catch (err) {
+  //       console.error('Erreur lors de la récupération de l’utilisateur :', err);
+  //     }
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
 
 
     const handleSubmit = async () => {
@@ -45,6 +46,11 @@ const CompleteRegistrationScreen = () => {
     if (password !== confirmPassword) {
         Alert.alert('Erreur', 'Les mots de passe ne correspondent pas.');
         return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert('Mot de passe trop court', 'Veuillez choisir un mot de passe d’au moins 6 caractères.');
+      return;
     }
 
     setStatus('verifying');
@@ -69,7 +75,7 @@ const CompleteRegistrationScreen = () => {
 
         setStatus('success');
         Alert.alert('Succès', 'Votre compte est activé !');
-        navigation.navigate('Login');
+        navigation.navigate('Accueil');
     } catch (err) {
         console.error('Erreur réseau :', err);
         setStatus('error');
@@ -81,7 +87,7 @@ const CompleteRegistrationScreen = () => {
   return (
     <View style={styles.container}>
 
-      {user && (
+      {/* {user && (
         <View style={{ marginBottom: 20 }}>
           <Text style={{ fontSize: 16, textAlign: 'center' }}>
             Vous êtes connecté en tant que :
@@ -90,7 +96,7 @@ const CompleteRegistrationScreen = () => {
             {user.pseudo ?? user.email}
           </Text>
         </View>
-      )}
+      )} */}
 
       <Text style={styles.title}>Créer votre mot de passe</Text>
 

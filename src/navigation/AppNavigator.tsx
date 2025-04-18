@@ -12,6 +12,7 @@ import LoginScreen from '../screens/LoginScreen';
 import CompleteRegistrationScreen from '../screens/CompleteRegistrationScreen';
 import HomeScreen from '../screens/HomeScreen';
 import AuthRedirectHandler from '../components/AuthRedirectHandler';
+import { navigationRef } from './navigationRef';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
@@ -36,7 +37,7 @@ const AppNavigator = () => {
   }
   
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer linking={linking} ref={navigationRef}>
       <Stack.Navigator
       screenOptions={{
         headerShown: false,
