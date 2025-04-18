@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Animated, StyleSheet, Text, View, PanResponder, Dimensions } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, StyleSheet, Text, View, PanResponder, Dimensions, TouchableOpacity } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AppStackParamList, Question, Results } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -8,6 +8,7 @@ import { defaultAnswers, useUserDataStore } from '../store/userDataStore';
 import QuestionCard from '../components/QuestionCard';
 import { useSwipe } from '../hooks/useSwipe';
 import { firstQuestions, globalQuestions } from '../data/questions';
+import { useAuth } from '../context/AuthContext';
 
 // Obtient la largeur de l'écran, utilisée pour les calculs de swipe
 const { width } = Dimensions.get('window');
@@ -18,12 +19,16 @@ type QuestionnaireScreenRouteProp = RouteProp<AppStackParamList, 'Questionnaire'
 
 
 const QuestionnaireScreen = () => {
+
+
   const route = useRoute<QuestionnaireScreenRouteProp>();
   const isGlobalQuiz = route.params?.isGlobalQuiz ?? false;
   const questions: Question[] = isGlobalQuiz ? globalQuestions : firstQuestions;
 
   // Stocke l'index de la question actuelle
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { isLoggedIn, user } = useAuth();
 
   const { setAnswer, answers, setTotalImpact, setCategoryDetails, totalImpact } = useUserDataStore();
 
@@ -105,6 +110,37 @@ const QuestionnaireScreen = () => {
         onSwipeLeft={() => handleSwipe('left')}
         onSwipeRight={() => handleSwipe('right')}
       />
+
+    {/* Auth info ou bouton Connexion */}
+    {isLoggedIn && user ? (
+      <Text
+        style={{
+          position: 'absolute',
+          bottom: 40,
+          alignSelf: 'center',
+          fontSize: 16,
+          fontWeight: 'bold',
+        }}
+      >
+        Bonjour {user.pseudo ?? user.email}
+      </Text>
+    ) : (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Login')}
+        style={{
+          position: 'absolute',
+          bottom: 40,
+          alignSelf: 'center',
+          backgroundColor: '#10b981',
+          paddingVertical: 12,
+          paddingHorizontal: 24,
+          borderRadius: 10,
+        }}
+      >
+        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Connexion</Text>
+      </TouchableOpacity>
+    )}
+
     </View>
 
   );

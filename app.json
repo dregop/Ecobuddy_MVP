@@ -1,5 +1,7 @@
 {
   "expo": {
+    "scheme": "eco",
+    "deepLinking": true,
     "name": "Ecobuddy",
     "slug": "Ecobuddy",
     "version": "1.0.0",

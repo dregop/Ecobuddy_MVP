@@ -42,15 +42,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  breakdownTitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  strong: {
-    color: 'darkred',
-    fontWeight: 'bold',
-  },
   barChart: {
     flexDirection: 'row',
     justifyContent: 'space-around',

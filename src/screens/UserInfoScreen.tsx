@@ -14,8 +14,7 @@ const UserInfoScreen = () => {
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
-
-  const { setUserInfo } = useUserDataStore();
+  const { answers, totalImpact, categoryDetails, setUserInfo } = useUserDataStore.getState();
 
   const handleImagePick = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -34,10 +33,46 @@ const UserInfoScreen = () => {
     }
   };
 
-  const handleSubmit = () => {
-    setUserInfo({ pseudo, email, age: Number(age), photoUri });
-    navigation.navigate('Résultats');
+  const handleSubmit = async () => {
+    if (!pseudo || !email) {
+      alert('Merci de donner un pseudo et un email.');
+      return;
+    }
+
+    try {
+      const baseUrl = process.env.API_URL?.replace(/\/$/, '')
+      const response = await fetch(`${baseUrl}/user/invite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          pseudo,
+          answers,
+          totalImpact,
+          categoryDetails,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Une erreur est survenue');
+      }
+
+      setUserInfo({ pseudo, email, age: Number(age), photoUri });
+
+      alert('Un email t’a été envoyé pour finaliser ton inscription.');
+
+      // Redirection vers un écran d’attente ou vers les résultats
+      navigation.navigate('Résultats');
+    } catch (error: any) {
+      console.error('Invite error:', error.message);
+      alert('Erreur lors de l’invitation : ' + error.message);
+    }
   };
+
 
   return (
     <View style={styles.container}>

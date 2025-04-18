@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, Button, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { AppStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -7,7 +7,6 @@ import { useUserDataStore } from '../store/userDataStore';
 import ImpactBreakdown from '../components/ImpactBreakdown';
 
 type ResultsScreenNavigationProp = StackNavigationProp<AppStackParamList, 'Résultats'>;
-type ResultsScreenRouteProp = RouteProp<AppStackParamList, 'Résultats'>;
 
 const { width } = Dimensions.get('window');
 
@@ -54,16 +53,19 @@ const ResultsScreen = () => {
         </Text>
 
         <ImpactBreakdown />
-
-        {/* Actions */}
-        {/* <View style={styles.buttonContainer}>
-          <Button title="Avoir plus d'informations" onPress={viewDetails} />
-        </View> */}
-
-        {/* <View style={styles.buttonContainer}>
-          <Text style={styles.refineText}>Affine ton empreinte avec d'autres questions :</Text>
-          <Button title="Questions illimitées" onPress={startGlobalQuiz} />
-        </View> */}
+        
+        <TouchableOpacity
+          style={{
+            marginTop: 20,
+            backgroundColor: '#10b981',
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 10,
+          }}
+          onPress={() => navigation.navigate('Niveau')}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Suivant</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -13,11 +13,12 @@ const App: React.FC = () => {
       {/* Fond dynamique */}
       <Background theme={theme} />
 
-      {/* Bannière dynamique */}
-      <Banner theme={theme} />
-
       <AuthProvider>
-          <AppNavigator />
+        {/* Bannière dynamique */}
+        <Banner theme={theme} />
+
+        <AppNavigator />
+        
       </AuthProvider>
     </View>
   );

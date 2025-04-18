@@ -1,29 +1,61 @@
-import React, { createContext, useContext, useState } from "react";
+// context/AuthContext.tsx
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useUserDataStore } from '../store/userDataStore';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
-  logout: () => void;
+  isAuthLoading: boolean;
+  user: { email: string; pseudo?: string } | null;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simule l'état de connexion
+  const [user, setUser] = useState<{ email: string; pseudo: string } | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const { setUserInfo } = useUserDataStore.getState();
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const refreshUser = async () => {
+    setIsAuthLoading(true);
+    try {
+      const response = await fetch(`${process.env.API_URL}/me`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        setUserInfo(data.user);   
+        setIsLoggedIn(true);
+      } else {
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    } catch (err) {
+      console.error('[AuthContext] Erreur de connexion :', err);
+      setUser(null);
+      setIsLoggedIn(false);
+    } finally {
+      setIsAuthLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, user, refreshUser, isAuthLoading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook personnalisé pour accéder au contexte
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };

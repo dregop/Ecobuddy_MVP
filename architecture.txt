@@ -1,23 +1,36 @@
 /ecobuddy
 ├── /src
 │   ├── /components
+│   │   ├── Background.tsx         # Background Terre qui tourne + fond
+│   │   ├── Banner.tsx             # Banner
 │   │   ├── Button.tsx             # Composant bouton réutilisable
-│   │   ├── Card.tsx               # Carte pour afficher une question ou un résultat
-│   │   ├── Header.tsx             # En-tête commun
-│   │   └── SwipeHandler.tsx       # Gestion des swipes pour les questions
-│   ├── /screens
-│   │   ├── QuestionnaireScreen.tsx # Écran principal pour le questionnaire
-│   │   ├── ResultsScreen.tsx       # Écran des résultats
-│   │   └── WelcomeScreen.tsx       # (Optionnel) Écran d'accueil ou introduction
+│   │   ├── Cloud.tsx              # Nuage animé (utilisé dans le background)
+│   │   ├── Menu.tsx               # Situé en bas, lien vers Profil, Défis, Classement
+│   │   └── QuestionCard.tsx       # Gestion des swipes pour les questions
+│   ├── /data
+│   │   ├── questions.ts           # Liste des questions (à mettre en bdd plus tard)
+│   ├── /hooks
+│   │   ├── useSwipe.ts            # Hook sur le swipe
+│   ├── /lib
+│   │   ├── supabase.ts            # Gestion du client supabase
 │   ├── /navigation
 │   │   ├── AppNavigator.tsx       # Configuration de la navigation
-│   │   └── StackNavigator.tsx     # Navigateur principal (type stack)
+│   ├── /screens
+│   │   ├── CompleteRegistrationScreen.tsx # Ajouter un mdp à son compte
+│   │   ├── LoginScreen.tsx         # Login
+│   │   ├── NiveauScreen.tsx        # (Dernier Screen inscription) Screen qui donne le niveau et défis à réaliser
+│   │   ├── QuestionnaireScreen.tsx # Écran principal pour le questionnaire (Ecran d'inscription)
+│   │   ├── ResultsScreen.tsx       # Écran des résultats
+│   │   ├── UserInfoScreen.tsx      # Écran intermédiaire d'inscription
+│   │   └── WelcomeScreen.tsx       # (Optionnel) Écran d'accueil ou introduction
+│   ├── /store
+│   │   ├── userDataStore.ts        # Store Zustand qui gère les data utilisateur, reponses questionnaires ..
 │   ├── /utils
 │   │   ├── calculateCarbon.ts     # Algorithme de calcul de l'empreinte carbone
 │   │   ├── constants.ts           # Facteurs d'émission et autres constantes
-│   │   └── helpers.ts             # Fonctions utilitaires (ex. validation)
+│   │   └── types.ts               # Contiens les différents types des objets utilisés
 │   ├── /context
-│   │   └── UserAnswersContext.tsx # Gestion des réponses utilisateur avec React Context
+│   │   └── AuthContext.tsx        # Gestion de la session Utilisateur
 │   ├── /assets
 │   │   ├── /images                # Images (logos, icônes, etc.)
 │   │   ├── /fonts                 # Polices personnalisées
@@ -25,6 +38,7 @@
 │   ├── /styles
 │   │   └── globalStyles.ts        # Styles globaux pour tout le projet
 │   ├── App.tsx                    # Point d'entrée principal
+├── .env                           # Variables
 ├── package.json                   # Dépendances et scripts
 ├── tsconfig.json                  # Configuration TypeScript
 ├── README.md                      # Documentation

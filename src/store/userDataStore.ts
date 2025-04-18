@@ -36,7 +36,9 @@ type UserDataState = {
   setCategoryDetails: (details: CategoryDetailsType) => void;
   setAnswer: (category: keyof UserAnswers, field: string, value: any) => void;
   setUserInfo: (info: UserInfoType) => void;
+  resetUserData: () => void;
   resetAnswers: () => void;
+  saveImpactToBackend: () => Promise<void>;
   fetchImpactFromBackend: (userId: string) => Promise<void>;
   resetImpact: () => void;
 };
@@ -61,10 +63,45 @@ export const useUserDataStore = create<UserDataState>()(
           },
         })),
       setUserInfo: (info) => set({ userInfo: info }),
+      resetUserData: () => set({ userInfo: undefined }),
       resetAnswers: () => set({ answers: defaultAnswers }),
+      saveImpactToBackend: async () => {
+        const state = useUserDataStore.getState();
+        const { userInfo, totalImpact, categoryDetails, answers } = state;
+
+        if (!userInfo?.id) {
+          console.warn('[saveImpactToBackend] Aucun utilisateur connecté');
+          return;
+        }
+
+        try {
+          const response = await fetch(`${process.env.API_URL}/impact`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              userId: userInfo.id,
+              totalImpact,
+              categoryDetails,
+              answers,
+            }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            console.error('[saveImpactToBackend] Erreur:', error);
+            return;
+          }
+
+          const data = await response.json();
+          console.log('[saveImpactToBackend] Sauvegarde réussie :', data);
+        } catch (err) {
+          console.error('[saveImpactToBackend] Exception :', err);
+        }
+      },
       fetchImpactFromBackend: async (userId) => {
         try {
-          const response = await fetch(`https://your-backend.com/api/users/${userId}/impact`);
+          const response = await fetch(`${process.env.API_URL}/impact/${userId}`);
           const data = await response.json();
 
           set({

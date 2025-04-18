@@ -11,21 +11,13 @@ const Menu = () => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-              {/* onPress={() => navigation.navigate('Details', {})} */} 
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Accueil')}>
                 <Image
                     source={require('../assets/images/avatar.png')}
                     style={styles.image}
                     resizeMode="contain"
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Questionnaire', {})}>
-                <Image
-                    source={require('../assets/images/quizz.png')}
-                    style={styles.image}
-                    resizeMode="contain"
-                />
-                </TouchableOpacity>
         </View>
     );
 };

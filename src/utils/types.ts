@@ -9,6 +9,10 @@ export type AppStackParamList = {
     categoryDetails: Record<string, number>;
   };
   UserInfo: undefined; // Pas de paramètres pour cet écran
+  Niveau: undefined; // Pas de paramètres pour cet écran
+  Login: undefined; // Pas de paramètres pour cet écran
+  CompleteRegistration: undefined;
+  Accueil: undefined;
 };
 
 export interface CarbonFactors {
@@ -48,6 +52,7 @@ export type UserAnswers = {
 };
 
 export type UserInfoType = {
+  id?: string;
   pseudo: string;
   email: string;
   age: number;
