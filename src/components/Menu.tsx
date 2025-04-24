@@ -3,32 +3,55 @@ import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AppStackParamList } from '../utils/types';
+import { Ionicons } from '@expo/vector-icons';
 
 type NavigationProp = StackNavigationProp<AppStackParamList>;
 
-const Menu = () => {
-    const navigation = useNavigation<NavigationProp>();
+type MenuProps = {
+  currentRouteName?: string;
+  currentParams?: { [key: string]: any };
+};
 
-    return (
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Accueil')}>
-                <Image
-                    source={require('../assets/images/avatar.png')}
-                    style={styles.image}
-                    resizeMode="contain"
-                />
-            </TouchableOpacity>
-        </View>
-    );
+const Menu = ({ currentRouteName }: MenuProps) => {
+  const navigation = useNavigation<NavigationProp>();
+
+  const isDayQuizz = currentRouteName === 'Questionnaire';
+
+  return (
+    <View style={styles.container}>
+      {isDayQuizz ? (
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#111" />
+        </TouchableOpacity>
+      ) : (
+        <>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Accueil')}>
+            <Image
+              source={require('../assets/images/avatar.png')}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Challenge')}>
+            <Image
+              source={require('../assets/images/challenge.png')}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    position: 'relative',
     bottom: 0,
-    flexDirection: "row", // Aligner les éléments horizontalement
-    justifyContent: "space-evenly", // Espacement égal entre les éléments
-    width: "100%",
+    flexDirection: 'row', // Aligner les éléments horizontalement
+    justifyContent: 'space-evenly', // Espacement égal entre les éléments
+    width: '100%',
   },
   button: {
     width: 50,
@@ -36,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centrer l'image verticalement
     alignItems: 'center', // Centrer l'image horizontalement
     borderRadius: 50, // Bordures arrondies pour le bouton (facultatif)
-    margin: "10%",
+    margin: '10%',
     borderWidth: 1,
     backgroundColor: '#D9D9D9',
     borderColor: '#767676',
@@ -45,9 +68,7 @@ const styles = StyleSheet.create({
   image: {
     height: 50,
     width: 50,
-
   },
 });
 
 export default Menu;
-

@@ -1,18 +1,17 @@
-
 export type AppStackParamList = {
   Questionnaire: {
     questions?: any[];
-    isGlobalQuiz?: boolean;
+    type?: 'day' | 'week';
   }; // Pas de paramètres pour cet écran
   Résultats?: Results;
   Details: {
     categoryDetails: Record<string, number>;
   };
   UserInfo: undefined; // Pas de paramètres pour cet écran
-  Niveau: undefined; // Pas de paramètres pour cet écran
   Login: undefined; // Pas de paramètres pour cet écran
   CompleteRegistration: undefined;
   Accueil: undefined;
+  Challenge: undefined;
 };
 
 export interface CarbonFactors {

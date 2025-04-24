@@ -9,21 +9,21 @@ const carbonFactors: CarbonFactors = {
   },
   housing: {
     energy: 0.2, // kg CO₂/kWh
-    size: 10,    // kg CO₂/m²/an
+    size: 10, // kg CO₂/m²/an
   },
   food: {
-    vegetarian: 2.5,  // kg CO₂/an
+    vegetarian: 2.5, // kg CO₂/an
     flexitarian: 3.5,
     omnivore: 5,
   },
   travel: {
-    short: 300,  // kg CO₂/vol AR
+    short: 300, // kg CO₂/vol AR
     medium: 700,
     long: 2000,
   },
   purchases: {
-    clothing: 50,      // kg CO₂/vêtement neuf
-    electronics: 50,   // kg CO₂/an si renouvellement rapide
+    clothing: 50, // kg CO₂/vêtement neuf
+    electronics: 50, // kg CO₂/an si renouvellement rapide
   },
 };
 
@@ -36,7 +36,7 @@ function getFactorForField(category: keyof CarbonFactors, field: string, value: 
       if (field === 'homeSize') return carbonFactors.housing.size;
       return 0;
     case 'food':
-      return carbonFactors.food[value] ?? 3;
+      return carbonFactors.food[value] ?? 3.5;
     case 'travel':
       if (field === 'yearlyFlights') return carbonFactors.travel.medium;
       if (field === 'flightDistance') return carbonFactors.travel[value] ?? 1000;
@@ -49,7 +49,7 @@ function getFactorForField(category: keyof CarbonFactors, field: string, value: 
       return 0;
   }
 }
-  
+
 export function calculateCarbonFootprint(answers: UserAnswers): Results {
   let totalImpact = 0;
   const categoryDetails: Results['categoryDetails'] = {
@@ -121,4 +121,3 @@ export function calculateCarbonFootprint(answers: UserAnswers): Results {
 
   return { totalImpact, categoryDetails };
 }
-  

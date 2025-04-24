@@ -5,6 +5,7 @@ import { AppStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useUserDataStore } from '../store/userDataStore';
 import ImpactBreakdown from '../components/ImpactBreakdown';
+import { useRequireAuth } from '../hooks/useRequireAuth';
 
 type ResultsScreenNavigationProp = StackNavigationProp<AppStackParamList, 'Résultats'>;
 
@@ -13,19 +14,6 @@ const { width } = Dimensions.get('window');
 const ResultsScreen = () => {
   const navigation = useNavigation<ResultsScreenNavigationProp>();
   const { totalImpact, categoryDetails, resetAnswers, userInfo } = useUserDataStore();
-
-  const restartQuiz = () => {
-    resetAnswers();
-    navigation.navigate('Questionnaire', {});
-  };
-
-  const startGlobalQuiz = () => {
-    navigation.navigate('Questionnaire', { isGlobalQuiz: true });
-  };
-
-  const viewDetails = () => {
-    navigation.navigate('Details', { categoryDetails });
-  };
 
   return (
     <View style={styles.container}>
@@ -45,15 +33,16 @@ const ResultsScreen = () => {
         </View>
 
         {/* Résultat */}
-      <Text style={styles.breakdownTitle}>
-        Tu as émis <Text style={styles.strong}>{(totalImpact / 1000).toFixed(1)} Tonnes</Text> de Co₂ en 2024 d’après tes réponses
-      </Text>
+        <Text style={styles.breakdownTitle}>
+          Tu as émis <Text style={styles.strong}>{(totalImpact / 1000).toFixed(1)} Tonnes</Text> de
+          Co₂ en 2024 d’après tes réponses
+        </Text>
         <Text style={styles.comparisonText}>
-          Pour info, la moyenne pour un·e français·e est d’environ 10 tonnes de CO₂/an.
+          Pour info, la moyenne pour un·e français·e est d’environ 9 tonnes de CO₂/an.
         </Text>
 
         <ImpactBreakdown />
-        
+
         <TouchableOpacity
           style={{
             marginTop: 20,
@@ -62,7 +51,7 @@ const ResultsScreen = () => {
             paddingVertical: 10,
             borderRadius: 10,
           }}
-          onPress={() => navigation.navigate('Niveau')}
+          onPress={() => navigation.navigate('Challenge')}
         >
           <Text style={{ color: '#fff', fontWeight: 'bold' }}>Suivant</Text>
         </TouchableOpacity>
@@ -72,7 +61,13 @@ const ResultsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'transparent' },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'transparent',
+  },
   card: {
     position: 'absolute',
     width: width * 0.9,
