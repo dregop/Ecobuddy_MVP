@@ -14,7 +14,6 @@ const ImpactBreakdown = () => {
 
   return (
     <View style={styles.breakdownContainer}>
-
       <View style={styles.barChart}>
         {categoryData.map(({ key, icon, color }) => {
           const value = categoryDetails[key] ?? 0;

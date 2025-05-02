@@ -7,19 +7,33 @@ interface CarbonSummaryCardProps {
   kilometers: number;
 }
 
-const CarbonSummaryCard: React.FC<CarbonSummaryCardProps> = ({ totalTons, flights, kilometers }) => {
+const CarbonSummaryCard: React.FC<CarbonSummaryCardProps> = ({
+  totalTons,
+  flights,
+  kilometers,
+}) => {
   return (
     <View style={styles.card}>
       <View style={styles.row}>
-        <Image source={require('../assets/images/co2.png')} style={styles.icon} />
+        <View style={styles.block}>
+          <Image source={require('../assets/images/co2.png')} style={styles.icon} />
+          <Text style={styles.textImpact}>{totalTons} Tonnes</Text>
+        </View>
+
         <Text style={styles.equalSign}>=</Text>
-        <Image source={require('../assets/images/plane.png')} style={styles.icon} />
-        <Text style={styles.text}>{flights} Paris-New York</Text>
-        <Text style={styles.equalSign}>=</Text>
-        <Image source={require('../assets/images/car.png')} style={styles.icon} />
-        <Text style={styles.text}>{kilometers.toLocaleString()} Kms</Text>
+
+        <View style={styles.block}>
+          <Image source={require('../assets/images/plane.png')} style={styles.icon} />
+          <Text style={styles.text}>{flights} Paris-New York</Text>
+        </View>
+
+        {/* <Text style={styles.equalSign}>=</Text>
+
+        <View style={styles.block}>
+          <Image source={require('../assets/images/car.png')} style={styles.icon} />
+          <Text style={styles.text}>{kilometers.toLocaleString()} km</Text>
+        </View> */}
       </View>
-      <Text style={styles.total}>{totalTons} Tonnes</Text>
     </View>
   );
 };
@@ -41,28 +55,33 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap', // NE PAS PERMETTRE de passer à la ligne
+  },
+  block: {
+    width: '40%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 4, // espace entre les blocs
   },
   icon: {
-    width: 20,
-    height: 20,
-    marginHorizontal: 4,
+    width: 25,
+    height: 25,
   },
-  equalSign: {
-    fontSize: 18,
-    marginHorizontal: 4,
-    color: '#555',
+  textImpact: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#F44336',
+    marginLeft: 4,
   },
   text: {
     fontSize: 12,
     color: '#333',
-    marginHorizontal: 4,
+    marginLeft: 4,
   },
-  total: {
-    marginTop: 4,
-    fontSize: 16,
-    color: '#F44336',
-    fontWeight: 'bold',
+  equalSign: {
+    fontSize: 18,
+    marginHorizontal: 6,
+    color: '#555',
   },
 });
 

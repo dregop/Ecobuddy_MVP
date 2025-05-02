@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { AppStackParamList } from '../utils/types';
+import { AppStackParamList } from '../../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useUserDataStore } from '../store/userDataStore';
-import ImpactBreakdown from '../components/ImpactBreakdown';
-import { useRequireAuth } from '../hooks/useRequireAuth';
+import { useUserDataStore } from '../../store/userDataStore';
+import ImpactBreakdown from '../../components/ImpactBreakdown';
+import { useRequireAuth } from '../../hooks/useRequireAuth';
 
 type ResultsScreenNavigationProp = StackNavigationProp<AppStackParamList, 'Résultats'>;
 

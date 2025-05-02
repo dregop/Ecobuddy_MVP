@@ -15,6 +15,7 @@
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/stack": "^7.1.1",
     "@supabase/supabase-js": "^2.49.4",
+    "eas-cli": "^16.4.0",
     "expo": "~52.0.25",
     "expo-asset": "^11.0.2",
     "expo-constants": "^17.0.8",

@@ -2,36 +2,18 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserAnswers, UserInfoType } from '../utils/types';
+import { defaultAnswers } from '../data/defaultAnswers';
 
 type CategoryDetailsType = { [key: string]: number };
-
-export const defaultAnswers: UserAnswers = {
-  transport: {
-    transportMode: 'public_transport',
-    weeklyDistance: 30,
-  },
-  housing: {
-    homeSize: 50,
-    energyConsumption: 2000,
-  },
-  food: {
-    dietType: 'flexitarian',
-  },
-  travel: {
-    yearlyFlights: 1,
-    flightDistance: 'medium',
-  },
-  purchases: {
-    clothingPurchases: 12,
-    electronicsPurchases: 50,
-  },
-};
 
 type UserDataState = {
   totalImpact: number;
   categoryDetails: CategoryDetailsType;
   answers: UserAnswers;
   userInfo?: UserInfoType;
+  dailyImpact: number;
+  impactDelta: number;
+  streakDays: number;
   setTotalImpact: (impact: number) => void;
   setCategoryDetails: (details: CategoryDetailsType) => void;
   setAnswer: (category: keyof UserAnswers, field: string, value: any) => void;
@@ -41,6 +23,10 @@ type UserDataState = {
   saveImpactToBackend: () => Promise<void>;
   fetchImpactFromBackend: (userId: string) => Promise<void>;
   resetImpact: () => void;
+  setDailyImpact: (value: number) => void;
+  setImpactDelta: (value: number) => void;
+  setStreakDays: (days: number) => void;
+  saveDailyImpactToBackend: () => Promise<void>;
 };
 
 export const useUserDataStore = create<UserDataState>()(
@@ -50,6 +36,9 @@ export const useUserDataStore = create<UserDataState>()(
       categoryDetails: {},
       answers: defaultAnswers,
       userInfo: undefined,
+      dailyImpact: 0,
+      impactDelta: 0,
+      streakDays: 0,
       setTotalImpact: (impact) => set({ totalImpact: impact }),
       setCategoryDetails: (details) => set({ categoryDetails: details }),
       setAnswer: (category, field, value) =>
@@ -114,11 +103,48 @@ export const useUserDataStore = create<UserDataState>()(
         }
       },
       resetImpact: () => set({ totalImpact: 0, categoryDetails: {} }),
+      setDailyImpact: (value) => set({ dailyImpact: value }),
+      setImpactDelta: (value) => set({ impactDelta: value }),
+      setStreakDays: (days) => set({ streakDays: days }),
+      saveDailyImpactToBackend: async () => {
+        const state = useUserDataStore.getState();
+        const { userInfo, dailyImpact, impactDelta, streakDays } = state;
+
+        if (!userInfo?.id) {
+          console.warn('[saveDailyImpactToBackend] Aucun utilisateur connecté');
+          return;
+        }
+
+        try {
+          const response = await fetch(`${process.env.API_URL}/daily-impact`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              userId: userInfo.id,
+              date: new Date().toISOString().slice(0, 10), // yyyy-mm-dd
+              dailyImpact,
+              impactDelta,
+              streakDays,
+            }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            console.error('[saveDailyImpactToBackend] Erreur:', error);
+            return;
+          }
+
+          const data = await response.json();
+          console.log('[saveDailyImpactToBackend] Sauvegarde journalier réussie :', data);
+        } catch (err) {
+          console.error('[saveDailyImpactToBackend] Exception :', err);
+        }
+      },
     }),
     {
       name: 'user-data-storage',
-      storage: AsyncStorage as any, //FIXME: Remove any when AsyncStorage is updated
-    }
-  )
+      storage: AsyncStorage as any, //FIXME: Remove any
+    },
+  ),
 );
-

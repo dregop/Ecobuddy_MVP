@@ -1,9 +1,9 @@
 export type AppStackParamList = {
   Questionnaire: {
     questions?: any[];
-    type?: 'day' | 'week';
+    type?: 'day' | 'week' | 'first'; // Type de questionnaire (jour, semaine ou premier)
   }; // Pas de paramètres pour cet écran
-  Résultats?: Results;
+  Résultats: Results;
   Details: {
     categoryDetails: Record<string, number>;
   };
@@ -12,6 +12,8 @@ export type AppStackParamList = {
   CompleteRegistration: undefined;
   Accueil: undefined;
   Challenge: undefined;
+  DailyResults: undefined;
+  WeeklyResults: undefined;
 };
 
 export interface CarbonFactors {

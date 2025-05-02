@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { QuestionnaireScreen, ResultsScreen, DetailsScreen } from '../screens';
+import { ResultsScreen, DetailsScreen } from '../screens';
 import { AppStackParamList } from '../utils/types'; // Importez les types définis
 import { useAuth } from '../context/AuthContext';
 import Menu from '../components/Menu';
@@ -14,6 +14,8 @@ import AuthRedirectHandler from '../components/AuthRedirectHandler';
 import { navigationRef } from './navigationRef';
 import ChallengeScreen from '../screens/ChallengeScreen';
 import { useEffect, useState } from 'react';
+import DailyResultsScreen from '../screens/Results/DailyResultsScreen';
+import QuestionnaireWrapper from '../screens/Questionnaire/QuestionnaireWrapper';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
@@ -67,8 +69,9 @@ const AppNavigator = () => {
         }}
       >
         <Stack.Screen name="Accueil" component={HomeScreen} />
-        <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
+        <Stack.Screen name="Questionnaire" component={QuestionnaireWrapper} />
         <Stack.Screen name="Résultats" component={ResultsScreen} />
+        <Stack.Screen name="DailyResults" component={DailyResultsScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="UserInfo" component={UserInfoScreen} />
         <Stack.Screen name="Challenge" component={ChallengeScreen} />
