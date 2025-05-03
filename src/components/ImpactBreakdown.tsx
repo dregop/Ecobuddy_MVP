@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useUserDataStore } from '../store/userDataStore';
+import { useTheme } from '@react-navigation/native';
 
 const categoryData = [
   { key: 'housing', icon: require('../assets/images/house.png'), color: '#f97316' },
@@ -11,6 +12,7 @@ const categoryData = [
 
 const ImpactBreakdown = () => {
   const { categoryDetails, totalImpact } = useUserDataStore();
+  const { colors } = useTheme();
 
   return (
     <View style={styles.breakdownContainer}>
@@ -22,12 +24,14 @@ const ImpactBreakdown = () => {
 
           return (
             <View key={key} style={styles.barItem}>
-              <Text style={styles.kgText}>{value.toFixed(0)} kg Co₂</Text>
+              <Text style={[styles.kgText, { color: colors.text }]}>{value.toFixed(0)} kg Co₂</Text>
               <View style={[styles.bar, { height: barHeight, backgroundColor: color }]} />
               <View style={styles.iconWrapper}>
                 <Image source={icon} style={styles.icon} resizeMode="contain" />
               </View>
-              <Text style={styles.percentText}>{percent.toFixed(0)}%</Text>
+              <Text style={[styles.percentText, { color: colors.text }]}>
+                {percent.toFixed(0)}%
+              </Text>
             </View>
           );
         })}
@@ -61,7 +65,6 @@ const styles = StyleSheet.create({
   },
   kgText: {
     fontSize: 12,
-    color: '#444',
     marginBottom: 4,
   },
   iconWrapper: {
@@ -79,7 +82,6 @@ const styles = StyleSheet.create({
   },
   percentText: {
     fontSize: 14,
-    color: '#111',
     fontWeight: '600',
     marginTop: 6,
   },

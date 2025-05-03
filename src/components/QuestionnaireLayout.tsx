@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import QuestionCard from './QuestionCard';
+import { useTheme } from '@react-navigation/native';
 
 export const QuestionnaireLayout = ({
   question,
@@ -23,29 +24,33 @@ export const QuestionnaireLayout = ({
   onSwipeRight: () => void;
   isLoggedIn?: boolean;
   onLoginPress?: () => void;
-}) => (
-  <View style={styles.container}>
-    <View style={styles.progressContainer}>
-      <Text style={styles.progressText}>
-        Question : {questionIndex + 1} / {totalQuestions}
-      </Text>
+}) => {
+  const { colors } = useTheme();
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.progressContainer}>
+        <Text style={[styles.progressText, { color: colors.text }]}>
+          Question : {questionIndex + 1} / {totalQuestions}
+        </Text>
+      </View>
+
+      <QuestionCard
+        question={question}
+        position={position}
+        panHandlers={panHandlers}
+        onSwipeLeft={onSwipeLeft}
+        onSwipeRight={onSwipeRight}
+      />
+
+      {!isLoggedIn && onLoginPress && (
+        <TouchableOpacity onPress={onLoginPress} style={styles.returnLink}>
+          <Text style={styles.returnText}>← Connexion</Text>
+        </TouchableOpacity>
+      )}
     </View>
-
-    <QuestionCard
-      question={question}
-      position={position}
-      panHandlers={panHandlers}
-      onSwipeLeft={onSwipeLeft}
-      onSwipeRight={onSwipeRight}
-    />
-
-    {!isLoggedIn && onLoginPress && (
-      <TouchableOpacity onPress={onLoginPress} style={styles.returnLink}>
-        <Text style={styles.returnText}>← Connexion</Text>
-      </TouchableOpacity>
-    )}
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

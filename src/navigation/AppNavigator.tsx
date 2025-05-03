@@ -16,6 +16,7 @@ import ChallengeScreen from '../screens/ChallengeScreen';
 import { useEffect, useState } from 'react';
 import DailyResultsScreen from '../screens/Results/DailyResultsScreen';
 import QuestionnaireWrapper from '../screens/Questionnaire/QuestionnaireWrapper';
+import { useAppTheme } from '../context/ThemeContext';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
@@ -23,6 +24,7 @@ const AppNavigator = () => {
   const { isLoggedIn, isAuthLoading } = useAuth();
   const pseudo = useUserDataStore((state) => state.userInfo?.pseudo);
   const [currentRoute, setCurrentRoute] = useState<{ name?: string; params?: any }>({});
+  const { navTheme } = useAppTheme();
 
   useEffect(() => {
     const unsubscribe = navigationRef.addListener('state', () => {
@@ -55,6 +57,7 @@ const AppNavigator = () => {
     <NavigationContainer
       linking={linking}
       ref={navigationRef}
+      theme={navTheme}
       onReady={() => {
         const route = navigationRef.getCurrentRoute();
         if (route) {
