@@ -11,7 +11,47 @@ type DailyResultsScreenNavigationProp = StackNavigationProp<AppStackParamList, '
 
 const DailyResultsScreen = () => {
   const navigation = useNavigation<DailyResultsScreenNavigationProp>();
-  const { dailyImpact, impactDelta, userInfo } = useUserDataStore();
+  const { dailyImpact, impactDelta, userInfo, answers } = useUserDataStore();
+
+  // Suggestions pondérées par impact
+  const food = answers.food || {};
+  const transport = answers.transport || {};
+  const purchases = answers.purchases || {};
+  const housing = answers.housing || {};
+
+  const suggestionCandidates: { condition: boolean; text: string; impact: number }[] = [
+    {
+      condition: purchases['dailyClothingPurchase'] === true,
+      text: '👕 Évite d’acheter neuf, essaie l’occasion ou la réparation (–15 kg CO₂e).',
+      impact: 15,
+    },
+    {
+      condition: food['dailyMeatIntake'] === true,
+      text: '🥦 Remplace la viande rouge par un plat végétarien (–3 kg CO₂e).',
+      impact: 3,
+    },
+    {
+      condition: transport['dailyDistance'] === true,
+      text: '🚲 Privilégie le vélo ou la marche pour les petits trajets (–20 kg CO₂e).',
+      impact: 20,
+    },
+    {
+      condition: housing['long_shower'] === true,
+      text: '🚿 Raccourcis tes douches chaudes pour économiser l’eau et l’énergie.',
+      impact: 1,
+    },
+  ];
+
+  let suggestion: string | null = null;
+
+  if (dailyImpact < 5) {
+    suggestion = '👌 Rien à redire aujourd’hui — continue comme ça !';
+  } else {
+    const best = suggestionCandidates
+      .filter((s) => s.condition)
+      .sort((a, b) => b.impact - a.impact)[0];
+    if (best) suggestion = best.text;
+  }
 
   return (
     <View style={styles.container}>
@@ -21,7 +61,7 @@ const DailyResultsScreen = () => {
 
         {/* Progrès sur les objectifs */}
         <Text style={styles.progressText}>
-          • 1 / 4 questionnaires journaliers complétés pour passer au niveau suivant
+          • 1 / 5 questionnaires journaliers complétés pour tes objectifs
         </Text>
 
         {/* Impact du jour */}
@@ -35,17 +75,19 @@ const DailyResultsScreen = () => {
 
         {/* Équivalence */}
         <Text style={styles.equivalenceText}>
-          • Équivalent à {(dailyImpact * 7).toFixed(0)} km en voiture
+          • Équivalent à {(dailyImpact * 4).toFixed(0)} km en voiture
         </Text>
 
-        {/* Suggestion d'amélioration */}
-        <View style={styles.tipContainer}>
-          <Text style={styles.tipTitle}>Ce qui peut t’aider demain</Text>
-          <Text style={styles.tipSuggestion}>🚩 Repas sans viande → -1,0 kg CO₂e'</Text>
-        </View>
+        {/* Suggestion unique */}
+        {suggestion && (
+          <View style={styles.tipContainer}>
+            <Text style={styles.tipTitle}>Ce qui peut t’aider demain</Text>
+            <Text style={styles.tipSuggestion}>• {suggestion}</Text>
+          </View>
+        )}
 
         {/* Streak 🔥 */}
-        {/* <Text style={styles.streakText}>Streak 🔥 {streakDays} jours</Text> */}
+        <Text style={styles.streakText}>Streak 🔥 jours</Text>
 
         {/* Mini-graph */}
         {/* <MiniGraph /> */}

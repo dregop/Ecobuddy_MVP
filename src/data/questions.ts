@@ -82,6 +82,10 @@ export const dayQuestions: Question[] = [
     category: 'food',
     field: 'dailyMeatIntake',
     value: true,
+    impact: {
+      true: 5, // kg CO₂ si oui
+      false: 2, // kg CO₂ si non (végétarien)
+    },
     icon: require('../assets/images/shopping.png'),
   },
   {
@@ -90,6 +94,10 @@ export const dayQuestions: Question[] = [
     category: 'transport',
     field: 'dailyDistance',
     value: true,
+    impact: {
+      true: 20, // kg CO₂ si oui
+      false: 0, // kg CO₂ si non
+    },
     icon: require('../assets/images/car.png'),
   },
   {
@@ -98,6 +106,10 @@ export const dayQuestions: Question[] = [
     category: 'purchases',
     field: 'dailyClothingPurchase',
     value: true,
+    impact: {
+      true: 15, // kg CO₂ si oui
+      false: 0, // kg CO₂ si non
+    },
     icon: require('../assets/images/shopping.png'),
   },
   {
@@ -106,6 +118,10 @@ export const dayQuestions: Question[] = [
     category: 'housing',
     field: 'longShower',
     value: true,
+    impact: {
+      true: 1, // kg CO₂ si oui
+      false: 0, // kg CO₂ si non
+    },
     icon: require('../assets/images/house.png'),
   },
 ];

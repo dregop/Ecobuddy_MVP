@@ -42,6 +42,7 @@ export type Question = {
   field: string;
   value: any;
   icon: any;
+  impact?: any; // Impact carbone associé à la question
 };
 
 export type UserAnswers = {
