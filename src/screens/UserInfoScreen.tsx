@@ -40,7 +40,7 @@ const UserInfoScreen = () => {
     }
 
     try {
-      const baseUrl = process.env.API_URL?.replace(/\/$/, '')
+      const baseUrl = process.env.API_URL?.replace(/\/$/, '');
       const response = await fetch(`${baseUrl}/user/invite`, {
         method: 'POST',
         headers: {
@@ -72,7 +72,6 @@ const UserInfoScreen = () => {
       alert('Erreur lors de l’invitation : ' + error.message);
     }
   };
-
 
   return (
     <View style={styles.container}>
@@ -110,7 +109,11 @@ const UserInfoScreen = () => {
         onChangeText={setAge}
       />
 
-      <Button title="Valider et voir mes résultats" onPress={handleSubmit} disabled={!pseudo || !email || !age} />
+      <Button
+        title="Valider et voir mes résultats"
+        onPress={handleSubmit}
+        disabled={!pseudo || !email || !age}
+      />
     </View>
   );
 };
@@ -119,12 +122,23 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
   input: {
-    height: 40, borderColor: '#ccc', borderWidth: 1, marginBottom: 15, paddingHorizontal: 10, borderRadius: 5,
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
   photo: { width: 100, height: 100, borderRadius: 50, marginBottom: 20, alignSelf: 'center' },
   photoPlaceholder: {
-    width: 100, height: 100, borderRadius: 50, backgroundColor: '#eee',
-    justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginBottom: 20,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#eee',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 });
 

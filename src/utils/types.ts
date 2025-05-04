@@ -3,7 +3,7 @@ export type AppStackParamList = {
     questions?: any[];
     type?: 'day' | 'week' | 'first'; // Type de questionnaire (jour, semaine ou premier)
   }; // Pas de paramètres pour cet écran
-  Résultats: Results;
+  Résultats: undefined;
   Details: {
     categoryDetails: Record<string, number>;
   };

@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
+import { View, Image, Text, StyleSheet, Modal, TouchableOpacity, Pressable } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useUserDataStore } from '../store/userDataStore';
 
@@ -19,27 +11,27 @@ const Banner: React.FC<BannerProps> = ({ theme }) => {
   const { isLoggedIn, user, refreshUser } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
 
-const handleLogout = async () => {
-  try {
-    const res = await fetch(`${process.env.API_URL}/user/logout`, {
-      method: 'POST',
-      credentials: 'include',
-    });
+  const handleLogout = async () => {
+    try {
+      const res = await fetch(`${process.env.API_URL}/user/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
 
-    if (res.ok) {
-      console.log('Déconnecté avec succès');
-      // Reset du store Zustand
-      useUserDataStore.getState().resetUserData?.();
-      refreshUser(); // pour forcer le refresh dans AuthContext
-    } else {
-      console.error('Échec de la déconnexion');
+      if (res.ok) {
+        console.log('Déconnecté avec succès');
+        // Reset du store Zustand
+        useUserDataStore.getState().resetUserData?.();
+        refreshUser(); // pour forcer le refresh dans AuthContext
+      } else {
+        console.error('Échec de la déconnexion');
+      }
+    } catch (err) {
+      console.error('Erreur lors de la déconnexion :', err);
+    } finally {
+      setMenuVisible(false);
     }
-  } catch (err) {
-    console.error('Erreur lors de la déconnexion :', err);
-  } finally {
-    setMenuVisible(false);
-  }
-};
+  };
 
   const bannerStyles = {
     light: {
