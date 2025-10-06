@@ -3,7 +3,9 @@ import { navigate, navigationRef } from '../navigation/navigationRef';
 
 const AuthRedirectHandler = () => {
   useEffect(() => {
-    console.log('[AuthRedirectHandler] Initialisation du gestionnaire de redirection d\'authentification');
+    console.log(
+      "[AuthRedirectHandler] Initialisation du gestionnaire de redirection d'authentification",
+    );
     const hash = window?.location?.hash;
 
     if (hash?.startsWith('#access_token=')) {
@@ -19,10 +21,14 @@ const AuthRedirectHandler = () => {
             // 🕐 attendre que la navigation soit prête
             const tryNavigate = () => {
               if (navigationRef.isReady()) {
-                console.log('[AuthRedirectHandler] Navigation prête, redirection vers CompleteRegistration');
+                console.log(
+                  '[AuthRedirectHandler] Navigation prête, redirection vers CompleteRegistration',
+                );
                 navigate('CompleteRegistration');
               } else {
-                console.log('[AuthRedirectHandler] Navigation pas encore prête, réessayer dans 100ms');
+                console.log(
+                  '[AuthRedirectHandler] Navigation pas encore prête, réessayer dans 100ms',
+                );
                 setTimeout(tryNavigate, 100);
               }
             };

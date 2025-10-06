@@ -28,7 +28,7 @@ const App: React.FC = () => {
         <Background theme={themeName} />
         <AuthProvider>
           <Banner theme={themeName} />
-          <AppNavigator /> {/* plus besoin de propager manuellement */}
+          <AppNavigator />
         </AuthProvider>
       </View>
     </ThemeContext.Provider>

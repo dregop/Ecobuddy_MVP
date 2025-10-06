@@ -1,6 +1,7 @@
-// context/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useUserDataStore } from '../store/userDataStore';
+import { getToken } from '../utils/tokenStorage';
+import { getApiUrl } from '../utils/getApiUrl';
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -19,18 +20,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const refreshUser = async () => {
     setIsAuthLoading(true);
+
     try {
-      const response = await fetch(`${process.env.API_URL}/me`, {
+      const token = await getToken();
+      if (!token) {
+        console.warn('[AuthContext] Aucun token trouvé en local.');
+        setUser(null);
+        setIsLoggedIn(false);
+        return;
+      }
+
+      const response = await fetch(`${getApiUrl()}/me`, {
         method: 'GET',
-        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      console.log('[AuthContext] Status:', response.status);
 
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
-        setUserInfo(data.user);   
+        setUserInfo(data.user);
         setIsLoggedIn(true);
       } else {
+        const text = await response.text();
+        console.error('Réponse /me échouée :', response.status, text);
         setUser(null);
         setIsLoggedIn(false);
       }

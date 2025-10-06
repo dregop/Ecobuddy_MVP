@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ResultsScreen, DetailsScreen } from '../screens';
+import { ResultsScreen } from '../screens';
 import { AppStackParamList } from '../utils/types'; // Importez les types définis
 import { useAuth } from '../context/AuthContext';
 import Menu from '../components/Menu';
@@ -17,6 +17,8 @@ import { useEffect, useState } from 'react';
 import DailyResultsScreen from '../screens/Results/DailyResultsScreen';
 import QuestionnaireWrapper from '../screens/Questionnaire/QuestionnaireWrapper';
 import { useAppTheme } from '../context/ThemeContext';
+import { ActivityIndicator, View } from 'react-native';
+import ChatScreen from '../screens/ChatScreen';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
@@ -38,7 +40,7 @@ const AppNavigator = () => {
   }, []);
 
   const linking = {
-    prefixes: ['http://localhost:8081', 'eco://'],
+    prefixes: ['eco://'], // 'http://192.168.1.89:8081',
     config: {
       screens: {
         Accueil: 'accueil',
@@ -51,7 +53,13 @@ const AppNavigator = () => {
     },
   };
 
-  if (isAuthLoading) return null;
+  // if (isAuthLoading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <NavigationContainer
@@ -75,11 +83,11 @@ const AppNavigator = () => {
         <Stack.Screen name="Questionnaire" component={QuestionnaireWrapper} />
         <Stack.Screen name="Résultats" component={ResultsScreen} />
         <Stack.Screen name="DailyResults" component={DailyResultsScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="UserInfo" component={UserInfoScreen} />
         <Stack.Screen name="Challenge" component={ChallengeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="CompleteRegistration" component={CompleteRegistrationScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
 
       {(isLoggedIn || !!pseudo) && (

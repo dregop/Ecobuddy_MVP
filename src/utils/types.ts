@@ -14,6 +14,7 @@ export type AppStackParamList = {
   Challenge: undefined;
   DailyResults: undefined;
   WeeklyResults: undefined;
+  Chat: undefined;
 };
 
 export interface CarbonFactors {

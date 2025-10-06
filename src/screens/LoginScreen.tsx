@@ -14,6 +14,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { AppStackParamList } from '../utils/types';
 import { useRedirectIfAuthenticated } from '../hooks/useRedirectIfAuthenticated';
 import { useAuth } from '../context/AuthContext';
+import { saveToken } from '../utils/tokenStorage';
+import { getApiUrl } from '../utils/getApiUrl';
 
 type LoginScreenNavigationProp = StackNavigationProp<AppStackParamList, 'Login'>;
 const { width } = Dimensions.get('window');
@@ -35,11 +37,10 @@ const LoginScreen = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.API_URL}/user/login`, {
+      const response = await fetch(`${getApiUrl()}/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-        credentials: 'include',
       });
 
       const data = await response.json();
@@ -48,10 +49,20 @@ const LoginScreen = () => {
         throw new Error(data.message || 'Erreur de connexion');
       }
 
+      if (!data.token) {
+        throw new Error('Token manquant dans la réponse');
+      }
+
+      // 🔐 Enregistrer le token
+      await saveToken(data.token);
+
+      // 🔄 Charger l'utilisateur
+      await refreshUser();
+
       console.log('Connexion réussie');
-      refreshUser();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error('Erreur lors de la connexion :', error);
+      Alert.alert('Erreur', error.message ?? 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
@@ -144,5 +155,4 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
-
 export default LoginScreen;

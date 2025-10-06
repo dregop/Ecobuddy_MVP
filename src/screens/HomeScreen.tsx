@@ -18,6 +18,7 @@ import { useRequireAuth } from '../hooks/useRequireAuth';
 import { useUserDataStore } from '../store/userDataStore';
 import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
+import { getApiUrl } from '../utils/getApiUrl';
 
 type NavigationProp = StackNavigationProp<AppStackParamList>;
 type HomeScreenRouteProp = RouteProp<AppStackParamList, 'Accueil'>;
@@ -31,6 +32,30 @@ const HomeScreen = () => {
   const userInfo = useUserDataStore((state) => state.userInfo);
   const fetchImpact = useUserDataStore((state) => state.fetchImpactFromBackend);
   const totalImpact = useUserDataStore((state) => state.totalImpact);
+
+  const askQuestionToChatGpt = async () => {
+    try {
+      const response = await fetch(`${getApiUrl()}/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: "Quels sont les impacts du changement climatique sur la biodiversité ?"
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Erreur serveur: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Réponse de ChatGPT:', data);
+      // Optionnel : afficher la réponse dans un Toast ou une alerte
+      // Alert.alert('Réponse', data.answer || JSON.stringify(data));
+    } catch (error) {
+      console.error('Erreur lors de l’appel à /ask :', error);
+    }
+  };
+  
 
   // Fetch l'impact utilisateur quand userInfo.id est dispo
   useEffect(() => {
@@ -83,10 +108,11 @@ const HomeScreen = () => {
           <Text style={styles.buttonText}>Faire son quizz journalier</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.quizButton}>
-          <Ionicons name="calendar-outline" size={18} color="#fff" style={{ marginRight: 8 }} />
-          <Text style={styles.buttonText}>Faire son quizz hebdo</Text>
-        </TouchableOpacity>
+        <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate('Chat')}>
+  <Ionicons name="chatbubble-ellipses-outline" size={18} color="#fff" style={{ marginRight: 8 }} />
+  <Text style={styles.buttonText}>Discuter avec l’expert climat</Text>
+</TouchableOpacity>
+
       </View>
     </ScrollView>
   );
